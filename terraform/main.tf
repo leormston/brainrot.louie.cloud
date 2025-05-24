@@ -7,12 +7,12 @@ terraform {
 }
 
 # S3 bucket for static site
-resource "aws_s3_bucket" "site" {
+resource "aws_s3_bucket" "site_two" {
   bucket = "brainrot.louie.cloud_two"
 }
 
-resource "aws_s3_bucket_public_access_block" "site" {
-  bucket = aws_s3_bucket.site.id
+resource "aws_s3_bucket_public_access_block" "site_two" {
+  bucket = aws_s3_bucket.site_two.id
 
   block_public_acls       = false
   block_public_policy     = false
@@ -20,8 +20,8 @@ resource "aws_s3_bucket_public_access_block" "site" {
   restrict_public_buckets = false
 }
 
-resource "aws_s3_bucket_website_configuration" "site" {
-  bucket = aws_s3_bucket.site.id
+resource "aws_s3_bucket_website_configuration" "site_two" {
+  bucket = aws_s3_bucket.site_two.id
 
   index_document {
     suffix = "index.html"
@@ -35,7 +35,7 @@ resource "aws_s3_bucket_website_configuration" "site" {
 # CloudFront distribution
 resource "aws_cloudfront_distribution" "cdn" {
   origin {
-    domain_name = aws_s3_bucket.site.bucket_regional_domain_name
+    domain_name = aws_s3_bucket.site_two.bucket_regional_domain_name
     origin_id   = "s3-brainrot-louie-cloud"
   }
 
