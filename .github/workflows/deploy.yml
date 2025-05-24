@@ -60,7 +60,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: us-east-1
         run: |
-          aws s3 sync build/ s3://$S3_BUCKET_NAME --delete
+          aws s3 sync build/ s3://brainrot.louie.cloudxx --delete
         # S3_BUCKET_NAME should be set as a GitHub secret or output from Terraform
 
       - name: Invalidate CloudFront (optional)
