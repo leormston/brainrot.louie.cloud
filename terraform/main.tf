@@ -8,7 +8,7 @@ terraform {
 
 # S3 bucket for static site
 resource "aws_s3_bucket" "site" {
-  bucket = "brainrot.louie.cloud"
+  bucket = "brainrot.louie.cloud_two"
 }
 
 resource "aws_s3_bucket_public_access_block" "site" {
