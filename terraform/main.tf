@@ -119,3 +119,19 @@ resource "aws_route53_record" "brainrot" {
     evaluate_target_health = false
   }
 }
+
+resource "aws_s3_bucket_policy" "site_two_public" {
+  bucket = aws_s3_bucket.site_two.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = "*"
+        Action = "s3:GetObject"
+        Resource = "${aws_s3_bucket.site_two.arn}/*"
+      }
+    ]
+  })
+}
