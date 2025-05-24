@@ -1,3 +1,11 @@
+terraform {
+  backend "s3" {
+    bucket = "brainrot-louie-cloud-terraform-state"
+    key    = "brainrot-louie.cloud/terraform.tfstate"
+    region = "us-east-1"
+  }
+}
+
 # S3 bucket for static site
 resource "aws_s3_bucket" "site" {
   bucket = "brainrot.louie.cloud"
@@ -75,17 +83,10 @@ resource "aws_acm_certificate" "cert" {
 }
 
 resource "aws_route53_record" "cert_validation" {
-  for_each = {
-    for dvo in aws_acm_certificate.cert.domain_validation_options : dvo.domain_name => {
-      name   = dvo.resource_record_name
-      type   = dvo.resource_record_type
-      record = dvo.resource_record_value
-    }
-  }
   zone_id = data.aws_route53_zone.louie_cloud.zone_id
-  name    = each.value.name
-  type    = each.value.type
-  records = [each.value.record]
+  name    = aws_acm_certificate.cert.domain_validation_options[0].resource_record_name
+  type    = aws_acm_certificate.cert.domain_validation_options[0].resource_record_type
+  records = [aws_acm_certificate.cert.domain_validation_options[0].resource_record_value]
   ttl     = 60
 }
 
